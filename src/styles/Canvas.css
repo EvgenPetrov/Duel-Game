@@ -10,7 +10,7 @@
 }
 
 .game-canvas {
-    border: 2px solid #000;
+    /* border: 2px solid #000; */
     border-radius: 5px;
     display: block;
     background-color: #000000;

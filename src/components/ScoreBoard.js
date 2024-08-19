@@ -1,5 +1,3 @@
-import React from "react";
-
 const Scoreboard = ({ heroes }) => {
     if (!heroes || heroes.length < 2) {
         return <div className="scoreboard">Загрузка...</div>;

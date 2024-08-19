@@ -105,7 +105,6 @@ export function updateGame(context, canvasWidth, canvasHeight, heroes, spells, m
 
     const newSpells = [];
     heroes.forEach((hero) => {
-        // Теперь частота создания спеллов зависит от скорости спелла
         const adjustedFireRate = hero.fireRate * hero.spellSpeed;
 
         if (Math.random() < adjustedFireRate) {
@@ -117,7 +116,7 @@ export function updateGame(context, canvasWidth, canvasHeight, heroes, spells, m
                     x: hero.x,
                     y: hero.y,
                     radius: 5,
-                    speed: hero.spellSpeed, // Используем spellSpeed
+                    speed: hero.spellSpeed,
                     direction: direction,
                     color: hero.spellColor,
                     ownerId: hero.id,
