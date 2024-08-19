@@ -1,0 +1,26 @@
+.canvas-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+}
+
+.game-canvas {
+    border: 2px solid #000;
+    display: block;
+}
+
+.hero-menus {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+
+.hero-menu {
+    margin-bottom: 20px;
+
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
