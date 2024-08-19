@@ -8,8 +8,10 @@ export function initializeGame(canvasWidth, canvasHeight) {
             speed: 2,
             direction: 1,
             fireRate: 0.02,
-            spellColor: "#0095DD", // Цвет спелла для первого героя
-            hits: 0, // Счетчик попаданий
+            spellColor: "#FF0000",
+            spellSpeed: 1,
+            hits: 0,
+            id: 1,
         },
         {
             x: canvasWidth - 50,
@@ -18,8 +20,10 @@ export function initializeGame(canvasWidth, canvasHeight) {
             speed: 2,
             direction: -1,
             fireRate: 0.02,
-            spellColor: "#DD9500", // Цвет спелла для второго героя
-            hits: 0, // Счетчик попаданий
+            spellColor: "#0000FF",
+            spellSpeed: 1,
+            hits: 0,
+            id: 2,
         },
     ];
 
@@ -35,23 +39,12 @@ function checkCollision(hero, spell) {
     return distance < hero.radius + spell.radius;
 }
 
-// Функция обновления состояния игры
 export function updateGame(context, canvasWidth, canvasHeight, heroes, spells, mousePos) {
-    if (!context) {
-        console.error("Context is null");
-        return { updatedHeroes: heroes, updatedSpells: spells };
-    }
-
     context.clearRect(0, 0, canvasWidth, canvasHeight);
-
-    // Отрисовка границ канваса (для отладки)
-    context.beginPath();
-    context.rect(0, 0, canvasWidth, canvasHeight);
-    context.strokeStyle = "#FF0000"; // Ярко-красный цвет для границы
-    context.stroke();
 
     const updatedHeroes = heroes.map((hero) => {
         hero.y += hero.speed * hero.direction;
+
         if (hero.y <= hero.radius || hero.y >= canvasHeight - hero.radius) {
             hero.direction *= -1;
         }
@@ -64,13 +57,10 @@ export function updateGame(context, canvasWidth, canvasHeight, heroes, spells, m
             hero.direction *= -1;
         }
 
-        // Отрисовка героя
         context.beginPath();
         context.arc(hero.x, hero.y, hero.radius, 0, 2 * Math.PI);
         context.fillStyle = hero.spellColor;
         context.fill();
-        context.strokeStyle = "#000";
-        context.stroke();
 
         return hero;
     });
@@ -79,44 +69,65 @@ export function updateGame(context, canvasWidth, canvasHeight, heroes, spells, m
         .map((spell) => {
             spell.x += spell.speed * spell.direction;
 
-            // Проверка на столкновение с героями
-            const targetHero = heroes.find((hero) => checkCollision(hero, spell));
-            if (targetHero) {
-                targetHero.hits += 1; // Увеличиваем счетчик попаданий
-                return null; // Удаляем спелл
-            }
-
-            // Отрисовка заклинания
             context.beginPath();
             context.arc(spell.x, spell.y, spell.radius, 0, 2 * Math.PI);
             context.fillStyle = spell.color;
             context.fill();
-            context.strokeStyle = "#000";
-            context.stroke();
 
+            if (spell.x < 0 || spell.x > canvasWidth) {
+                return null;
+            }
             return spell;
         })
         .filter((spell) => spell !== null);
 
-    // Создание новых заклинаний
-    const newSpells = [];
-    heroes.forEach((hero, index) => {
-        if (Math.random() < hero.fireRate) {
-            const newSpell = {
-                x: hero.x,
-                y: hero.y,
-                radius: 5,
-                speed: 2,
-                direction: index === 0 ? 1 : -1,
-                color: hero.spellColor, // Используем цвет героя
-            };
+    const remainingSpells = [];
+    updatedSpells.forEach((spell) => {
+        let hasHit = false;
 
-            // Отладка: логируем новые заклинания
-            console.log("New spell created:", newSpell);
+        const targetHero = heroes.find((hero) => hero.id !== spell.ownerId);
 
-            newSpells.push(newSpell);
+        if (targetHero && checkCollision(targetHero, spell) && !hasHit) {
+            const shooterHero = heroes.find((hero) => hero.id === spell.ownerId);
+            if (shooterHero) {
+                shooterHero.hits += 1;
+                console.log(
+                    `Hero ${shooterHero.id} scored a hit on Hero ${targetHero.id}! New hits: ${shooterHero.hits}`
+                );
+            }
+            hasHit = true;
+        }
+
+        if (!hasHit) {
+            remainingSpells.push(spell);
         }
     });
 
-    return { updatedHeroes, updatedSpells: [...updatedSpells, ...newSpells] };
+    const newSpells = [];
+    heroes.forEach((hero) => {
+        // Теперь частота создания спеллов зависит от скорости спелла
+        const adjustedFireRate = hero.fireRate * hero.spellSpeed;
+
+        if (Math.random() < adjustedFireRate) {
+            const targetHero = heroes.find((h) => h.id !== hero.id);
+
+            if (targetHero) {
+                const direction = targetHero.x > hero.x ? 1 : -1;
+                const newSpell = {
+                    x: hero.x,
+                    y: hero.y,
+                    radius: 5,
+                    speed: hero.spellSpeed, // Используем spellSpeed
+                    direction: direction,
+                    color: hero.spellColor,
+                    ownerId: hero.id,
+                    id: Date.now() + Math.random(),
+                };
+
+                newSpells.push(newSpell);
+            }
+        }
+    });
+
+    return { updatedHeroes, updatedSpells: remainingSpells.concat(newSpells) };
 }

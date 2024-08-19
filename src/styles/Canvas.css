@@ -1,3 +1,7 @@
+* {
+    cursor: pointer;
+}
+
 .canvas-container {
     display: flex;
     align-items: center;
@@ -7,7 +11,9 @@
 
 .game-canvas {
     border: 2px solid #000;
+    border-radius: 5px;
     display: block;
+    background-color: #000000;
 }
 
 .hero-menus {
@@ -18,9 +24,15 @@
 
 .hero-menu {
     margin-bottom: 20px;
-
+    width: 250px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f9f9f9;
+}
+
+.scoreboard {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }

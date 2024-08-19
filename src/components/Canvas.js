@@ -14,7 +14,6 @@ const Canvas = () => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
 
-        // Убедитесь, что размеры канваса корректны
         canvas.width = 800;
         canvas.height = 400;
 
@@ -65,6 +64,12 @@ const Canvas = () => {
         setHeroes(updatedHeroes);
     };
 
+    const handleSpellSpeedChange = (heroIndex, spellSpeed) => {
+        const updatedHeroes = [...heroes];
+        updatedHeroes[heroIndex].spellSpeed = spellSpeed;
+        setHeroes(updatedHeroes);
+    };
+
     return (
         <div className="canvas-container">
             <canvas ref={canvasRef} width="800" height="400" className="game-canvas"></canvas>
@@ -76,6 +81,9 @@ const Canvas = () => {
                         hero={hero}
                         onColorChange={(color) => handleColorChange(index, color)}
                         onSpeedChange={(speed) => handleSpeedChange(index, speed)}
+                        onSpellSpeedChange={(spellSpeed) =>
+                            handleSpellSpeedChange(index, spellSpeed)
+                        }
                     />
                 ))}
             </div>
