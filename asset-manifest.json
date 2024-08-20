@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/Duel-Game/static/css/main.d6861907.css",
-    "main.js": "/Duel-Game/static/js/main.80c569db.js",
+    "main.css": "/Duel-Game/static/css/main.0c67f237.css",
+    "main.js": "/Duel-Game/static/js/main.cda8747e.js",
     "index.html": "/Duel-Game/index.html",
-    "main.d6861907.css.map": "/Duel-Game/static/css/main.d6861907.css.map",
-    "main.80c569db.js.map": "/Duel-Game/static/js/main.80c569db.js.map"
+    "main.0c67f237.css.map": "/Duel-Game/static/css/main.0c67f237.css.map",
+    "main.cda8747e.js.map": "/Duel-Game/static/js/main.cda8747e.js.map"
   },
   "entrypoints": [
-    "static/css/main.d6861907.css",
-    "static/js/main.80c569db.js"
+    "static/css/main.0c67f237.css",
+    "static/js/main.cda8747e.js"
   ]
 }
