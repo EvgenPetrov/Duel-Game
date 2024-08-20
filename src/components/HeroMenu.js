@@ -1,37 +1,42 @@
+// Компонент HeroMenu для настройки параметров героя
 import React, { useState, useEffect } from "react";
 import "../styles/Canvas.css";
 
+// Компонент HeroMenu, который позволяет изменять параметры героя
 const HeroMenu = ({ hero, onColorChange, onSpeedChange, onSpellSpeedChange }) => {
-    const [color, setColor] = useState(hero.spellColor);
-    const [speed, setSpeed] = useState(hero.speed);
-    const [spellSpeed, setSpellSpeed] = useState(hero.spellSpeed || 2); // Значение по умолчанию для скорости спеллов
+    const [color, setColor] = useState(hero.spellColor); // Локальное состояние для цвета спелла
+    const [speed, setSpeed] = useState(hero.speed); // Локальное состояние для скорости героя
+    const [spellSpeed, setSpellSpeed] = useState(hero.spellSpeed || 2); // Локальное состояние для скорости спелла (значение по умолчанию 2)
 
-    // Обновление локального состояния при изменении пропсов
+    // Обновляем локальное состояние при изменении пропсов
     useEffect(() => {
         setColor(hero.spellColor);
         setSpeed(hero.speed);
         setSpellSpeed(hero.spellSpeed || 2);
     }, [hero]);
 
+    // Обработчик изменения цвета
     const handleColorChange = (e) => {
         const newColor = e.target.value;
         setColor(newColor);
-        onColorChange(newColor);
+        onColorChange(newColor); // Вызываем переданный пропс onColorChange с новым значением цвета
     };
 
+    // Обработчик изменения скорости героя
     const handleSpeedChange = (e) => {
         const newSpeed = parseFloat(e.target.value);
         setSpeed(newSpeed);
-        onSpeedChange(newSpeed);
+        onSpeedChange(newSpeed); // Вызываем переданный пропс onSpeedChange с новым значением скорости
     };
 
+    // Обработчик изменения скорости спелла
     const handleSpellSpeedChange = (e) => {
         const newSpellSpeed = parseFloat(e.target.value);
         setSpellSpeed(newSpellSpeed);
         if (onSpellSpeedChange) {
-            onSpellSpeedChange(newSpellSpeed);
+            onSpellSpeedChange(newSpellSpeed); // Вызываем переданный пропс onSpellSpeedChange с новым значением скорости спелла
         } else {
-            console.warn("onSpellSpeedChange is not defined");
+            console.warn("onSpellSpeedChange is not defined"); // Если обработчик не передан, выводим предупреждение в консоль
         }
     };
 
@@ -52,7 +57,7 @@ const HeroMenu = ({ hero, onColorChange, onSpeedChange, onSpellSpeedChange }) =>
                     value={speed}
                     onChange={handleSpeedChange}
                 />
-                <span>{speed.toFixed(1)}</span>
+                <span>{speed.toFixed(1)}</span> {/* Отображаем текущее значение скорости */}
             </div>
             <div>
                 <label>Spell Speed:</label>
@@ -64,7 +69,8 @@ const HeroMenu = ({ hero, onColorChange, onSpeedChange, onSpellSpeedChange }) =>
                     value={spellSpeed}
                     onChange={handleSpellSpeedChange}
                 />
-                <span>{spellSpeed.toFixed(1)}</span>
+                <span>{spellSpeed.toFixed(1)}</span>{" "}
+                {/* Отображаем текущее значение скорости спелла */}
             </div>
         </div>
     );
